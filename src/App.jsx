@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
-import { useNavigate, useHistory } from 'react-router-dom'
-import { useLoadingSpinner } from 'components/LoadingSpinner'
-import { FileUpload } from 'components/FileUpload'
-import { uploadFile } from 'services/firebase'
-import { StoredFile, StoredFileState } from "data/common";
-
-
-
+import { useNavigate } from 'react-router-dom'
+// import { useLoadingSpinner } from 'components/LoadingSpinner'
+// import { FileUpload } from 'components/FileUpload'
+// import { uploadFile } from 'services/firebase'
+// import { StoredFile, StoredFileState } from "data/common";
 
 export const EditEntryType = {
   Text: 'Text',
@@ -42,6 +39,24 @@ export const ValidationType = {
   Number: 'Number',
   Price: 'Price',
 }
+
+
+// export class EditEntry {
+//   attribute: String;
+//   attributeName: String;
+//   type: EditEntryType;
+//   isRequired: Boolean;
+//   validations: [ValidationType];
+//   extraParam: unknown;
+// }
+
+// export class EditFormProps {
+//   title: String;
+//   description: String;
+//   editEntries: [EditEntry];
+//   entityObj: unknown;
+//   onSubmitSuccess: Function;
+// }
 
 function validateValue(value, attributeName, validationType) {
   switch (validationType) {
@@ -155,28 +170,12 @@ function validateValue(value, attributeName, validationType) {
   return true;
 }
 
-export class EditEntry {
-  attribute: String;
-  attributeName: String;
-  type: EditEntryType;
-  isRequired: Boolean;
-  validations: [ValidationType];
-  extraParam: unknown;
-}
-
-export class EditFormProps {
-  title: String;
-  description: String;
-  editEntries: [EditEntry];
-  entityObj: unknown;
-  onSubmitSuccess: Function;
-}
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function EditForm(props: EditFormProps) {
+  
+export function EditForm(props) {
   const navigate = useNavigate();
   const [loader, showLoader, hideLoader] = useLoadingSpinner();
 
@@ -191,7 +190,7 @@ export function EditForm(props: EditFormProps) {
       fieldName,
       fileToUpload,
       (pc) => null,
-      (file: StoredFile) => {
+      (file) => {
         const uploadPhotoMapCp = { ...uploadPhotoMap };
         uploadPhotoMapCp[fieldName] = file.file_path;
         setUploadPhotoMap(uploadPhotoMapCp);
@@ -392,7 +391,7 @@ export function EditForm(props: EditFormProps) {
             </div>
             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
               {
-                props.editEntries.map((editEntry: EditEntry, index) => {
+                props.editEntries.map((editEntry, index) => {
                   const requiredMark = editEntry.isRequired ? "*" : "";
                   if (editEntry.condition != null) {
                     if (!editEntry.condition) return;
@@ -1251,4 +1250,10 @@ export function EditForm(props: EditFormProps) {
       </form>
     </div>
   )
+}  
+
+function App() {
+  <EditForm />
 }
+
+export default App
